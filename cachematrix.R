@@ -5,22 +5,51 @@
 ## already calculated and displayes whenever needed.
 
 
-## Function is used to cache inverse of matrix is until now 
-## it wasn't calculated, or if was calculated earlier then it
-## extracted from the cache memory.
+## Function is used to calculate the Inverse of given Matrix
+## Function creates a list object and this object is taken as
+## argument by the cacheSolve function to check if already 
+## inverse was calculated.
 
 makeCacheMatrix <- function(x = matrix()) {
+  
+    i <- NULL
     
+    set <- function(y) {
+      x <<- y
+      i <<- NULL
+    }
     
-}
+    get <- function() x
+    setinverse <- function(mean) i <<- solve
+    getinverse <- function() i
+    ##List containg all the funcions with their names
+    list(set = set, get = get,
+          setinverse = setinverse,
+          getinverse = getinverse)
+  }
+  
 
-
-## Function is used to calculate the Inverse of given Matrix
-## Function is called only when there is a need for calculating
-## the invere of the matrix.
+## Function takes object returned by makeCacheMatrix as argument
+## and checks if the inverse is already calculated, if yes then 
+## returns the same inverse or else calculates the inverse of 
+## the function.
 
 cacheSolve <- function(x, ...) {
   
-    ## Returns a matrix that is the inverse of 'x'
-    return (solve(x))
+  i <- x$getinverse()
+  if(!is.null(i)) {
+      ## If inverse exits
+      message ("getting cached data")
+      return (i)
+    }
+  
+  ## If inverse doesn't exists calculate and 
+  data <- x$get()
+  m <- solve(data, ...)
+  ## and set the value
+  x$setinverse(i)
+  
+  ## Returns a matrix that is the inverse of 'x'  
+  return(i)
+
 }
